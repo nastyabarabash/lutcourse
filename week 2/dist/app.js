@@ -42,12 +42,10 @@ class VehicleService {
         return this.items;
     }
 }
-const carService = new VehicleService();
-const boatService = new VehicleService();
-carService.add(Car);
-boatService.add(Boat);
-const cars = carService.list();
-const boats = boatService.list();
-console.log("Cars:", cars);
-console.log("Boats:", boats);
+const cars = new VehicleService();
+const boats = new VehicleService();
+cars.add(Car);
+boats.add(Boat);
+console.log("Cars:", cars.list());
+console.log("Boats:", boats.list());
 //# sourceMappingURL=app.js.map

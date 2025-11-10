@@ -14,7 +14,7 @@ let Vehicle: TVehicle = {
   power: 60
 }
 
-console.log(Vehicle)
+// console.log(Vehicle)
 
 interface IVehicle {
   model: string,
@@ -61,9 +61,9 @@ let Plane: IPlane = {
   wingspan: 65
 }
 
-console.log(Car)
-console.log(Boat)
-console.log(Plane)
+// console.log(Car)
+// console.log(Boat)
+// console.log(Plane)
 
 class VehicleService<T> {
   private items: T[] = [];
@@ -83,5 +83,9 @@ const boats = new VehicleService<IBoat>();
 cars.add(Car);
 boats.add(Boat);
 
-console.log("Cars:", cars.list());
-console.log("Boats:", boats.list());
+console.log(Vehicle)
+console.log(Car)
+console.log(Boat)
+console.log(Plane)
+console.log(cars.list());
+console.log(boats.list());
