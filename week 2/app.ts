@@ -68,7 +68,7 @@ let Plane: IPlane = {
 class VehicleService<T> {
   #items: T[] = [];
 
-  add(item: T) {
+  add(item: T): void {
     this.#items.push(item);
   }
 
