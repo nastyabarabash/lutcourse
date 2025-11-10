@@ -14,7 +14,7 @@ let Vehicle: TVehicle = {
   power: 60
 }
 
-console.log(Vehicle)
+// console.log(Vehicle)
 
 interface IVehicle {
   model: string,
@@ -83,5 +83,5 @@ const boats = new VehicleService<IBoat>();
 cars.add(Car);
 boats.add(Boat);
 
-console.log("Cars:", cars.list());
-console.log("Boats:", boats.list());
+// console.log("Cars:", cars.list());
+// console.log("Boats:", boats.list());
