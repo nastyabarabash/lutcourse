@@ -66,14 +66,14 @@ let Plane: IPlane = {
 // console.log(Plane)
 
 class VehicleService<T> {
-  private items: T[] = [];
+  #items: T[] = [];
 
   add(item: T) {
-    this.items.push(item);
+    this.#items.push(item);
   }
 
   list(): T[] {
-    return this.items;
+    return this.#items;
   }
 }
 
