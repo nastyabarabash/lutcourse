@@ -85,7 +85,7 @@ boats.add(Boat);
 
 console.log(Vehicle)
 console.log(Car)
-console.log(Boat)
 console.log(Plane)
+console.log(Boat)
 console.log(cars.list());
 console.log(boats.list());
