@@ -41,7 +41,6 @@ router.post("/sum", (req: Request, res: Response) => {
   }
 
   const sum = numbers.reduce((acc, n) => acc + n, 0);
-
   res.json({ sum });
 });
 
