@@ -67,22 +67,22 @@ router.get("/hello", (req: Request, res: Response) => {
 //     res.json(msg)
 //   })
 // })
-router.post("/sum", (req: Request, res: Response) => {
-  const numbers = req.body.numbers;
+// router.post("/sum", (req: Request, res: Response) => {
+//   const numbers = req.body.numbers;
 
-  // Validate input
-  if (!Array.isArray(numbers)) {
-    return res.status(400).json({ error: "numbers must be an array" });
-  }
+//   // Validate input
+//   if (!Array.isArray(numbers)) {
+//     return res.status(400).json({ error: "numbers must be an array" });
+//   }
 
-  // Ensure all elements are numbers
-  if (!numbers.every(n => typeof n === "number")) {
-    return res.status(400).json({ error: "all elements in numbers must be numbers" });
-  }
+//   // Ensure all elements are numbers
+//   if (!numbers.every(n => typeof n === "number")) {
+//     return res.status(400).json({ error: "all elements in numbers must be numbers" });
+//   }
 
-  const sum = numbers.reduce((acc, n) => acc + n, 0);
+//   const sum = numbers.reduce((acc, n) => acc + n, 0);
 
-  res.json({ sum });
-});
+//   res.json({ sum });
+// });
 
 export default router
