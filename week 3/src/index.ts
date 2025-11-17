@@ -18,8 +18,8 @@ fs.readFile("data/messages.json", "utf8", (err: NodeJS.ErrnoException | null, da
 })
 
 router.get("/hello", (req: Request, res: Response) => {
-  res.json(msg)
-})
+  res.json({ msg: "Hello world!" });
+});
 
 // router.get("/echo/:id", (req: Request, res: Response) => {
 //   res.json({ id: req.params.id });

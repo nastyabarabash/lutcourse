@@ -20,7 +20,7 @@ fs_1.default.readFile("data/messages.json", "utf8", (err, data) => {
     }
 });
 router.get("/hello", (req, res) => {
-    res.json(msg);
+    res.json({ msg: "Hello world!" });
 });
 // router.get("/echo/:id", (req: Request, res: Response) => {
 //   res.json({ id: req.params.id });
