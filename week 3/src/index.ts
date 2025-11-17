@@ -17,6 +17,10 @@ fs.readFile("data/messages.json", "utf8", (err: NodeJS.ErrnoException | null, da
   }
 })
 
+router.get("/", (req: Request, res: Response) => {
+  res.json(msg);
+});
+
 router.get("/hello", (req: Request, res: Response) => {
   res.json({ msg: "Hello world!" });
 });

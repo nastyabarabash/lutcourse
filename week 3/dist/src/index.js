@@ -19,6 +19,9 @@ fs_1.default.readFile("data/messages.json", "utf8", (err, data) => {
         console.error(`Error pasing JSON: ${error}`);
     }
 });
+router.get("/", (req, res) => {
+    res.json(msg);
+});
 router.get("/hello", (req, res) => {
     res.json({ msg: "Hello world!" });
 });
