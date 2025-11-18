@@ -1,13 +1,8 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const fs_1 = __importDefault(require("fs"));
-const router = (0, express_1.Router)();
+import { Router } from "express";
+import fs from "fs";
+const router = Router();
 let msg = [];
-fs_1.default.readFile("data/messages.json", "utf8", (err, data) => {
+fs.readFile("data/messages.json", "utf8", (err, data) => {
     if (err) {
         console.error(err);
         return;
@@ -39,5 +34,5 @@ router.post("/sum", (req, res) => {
     const sum = numbers.reduce((acc, n) => acc + n, 0);
     res.json({ sum });
 });
-exports.default = router;
+export default router;
 //# sourceMappingURL=index.js.map
