@@ -11,7 +11,7 @@ fs.readFile("data/messages.json", "utf8", (err, data) => {
         msg = JSON.parse(data);
     }
     catch (error) {
-        console.error(`Error pasing JSON: ${error}`);
+        console.error(`Error parsing JSON: ${error}`);
     }
 });
 router.get("/", (req, res) => {

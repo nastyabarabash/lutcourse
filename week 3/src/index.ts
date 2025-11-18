@@ -1,21 +1,21 @@
 import { Request, Response, Router } from "express";
-import fs from "fs"
+import fs from "fs";
 
-const router: Router = Router()
+const router: Router = Router();
 
-let msg: string[] = []
+let msg: string[] = [];
 
 fs.readFile("data/messages.json", "utf8", (err: NodeJS.ErrnoException | null, data: string) => {
   if (err) {
-    console.error(err)
-    return
+    console.error(err);
+    return;
   }
   try {
-    msg = JSON.parse(data)
-  }  catch (error: any) {
-    console.error(`Error pasing JSON: ${error}` )
+    msg = JSON.parse(data);
+  } catch (error: any) {
+    console.error(`Error parsing JSON: ${error}`);
   }
-})
+});
 
 router.get("/", (req: Request, res: Response) => {
   res.json(msg);
@@ -44,4 +44,4 @@ router.post("/sum", (req: Request, res: Response) => {
   res.json({ sum });
 });
 
-export default router
+export default router;
