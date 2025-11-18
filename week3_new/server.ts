@@ -1,6 +1,6 @@
 import express, {Express} from "express"
 import path from "path"
-import router from "./src/index.js"
+import router from "./src/index"
 import morgan from "morgan"
 
 const app: Express = express()
