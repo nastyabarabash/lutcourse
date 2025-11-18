@@ -1,4 +1,4 @@
-import { json, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
 import fs from "fs"
 
 const router: Router = Router()
