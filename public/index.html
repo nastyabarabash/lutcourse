@@ -1,38 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <h1>Test</h1>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo App</title>
 </head>
 <body>
+  <h1>Todo App</h1>
+
   <form id="todoForm">
-    <input id="userInput" placeholder="Name" />
-    <input id="todoInput" placeholder="Todo" />
-    <button id="submit-data">Add Todo</button>
+    <input id="userInput" type="text" placeholder="Enter name" />
+    <input id="todoInput" type="text" placeholder="Enter todo" />
+    <button id="submit-data" type="submit">Add Todo</button>
   </form>
 
-  <p id="response"></p>
+  <p id="addMessage"></p>
+
+  <hr />
+
+  <form id="searchForm">
+    <input id="searchInput" type="text" placeholder="Search name" />
+    <button id="search" type="submit">Search</button>
+  </form>
+
+  <p id="searchMessage"></p>
+  <ul id="todoList"></ul>
 
   <script>
-    const form = document.getElementById("todoForm");
-    const responseElement = document.getElementById("response");
+    // Add Todo Form
+    const todoForm = document.getElementById("todoForm");
+    const userInput = document.getElementById("userInput");
+    const todoInput = document.getElementById("todoInput");
+    const addMessage = document.getElementById("addMessage");
 
-    form.addEventListener("submit", async (e) => {
+    todoForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const name = document.getElementById("userInput").value;
-      const todo = document.getElementById("todoInput").value;
+      const name = userInput.value.trim();
+      const todo = todoInput.value.trim();
+
+      if (!name || !todo) return;
 
       const res = await fetch("/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, todo }),
+        body: JSON.stringify({ name, todo })
       });
 
       const data = await res.json();
-      responseElement.textContent = data.message || data.error;
+      addMessage.textContent = data.message;
+
+      todoForm.reset();
+    });
+
+    // Search Todos Form
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+    const todoList = document.getElementById("todoList");
+    const searchMessage = document.getElementById("searchMessage");
+
+    searchForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = searchInput.value.trim();
+      todoList.innerHTML = "";
+      searchMessage.textContent = "";
+
+      const res = await fetch(`/todos/${name}`);
+      const data = await res.json();
+
+      if (res.status === 404) {
+        searchMessage.textContent = data.message;
+        return;
+      }
+
+      searchMessage.textContent = `Todos for ${data.name.trim()}:`;
+
+      data.todos.forEach(todo => {
+        const li = document.createElement("li");
+        li.textContent = todo;
+        todoList.appendChild(li);
+      });
     });
   </script>
 </body>
