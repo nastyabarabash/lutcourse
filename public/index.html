@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <h1>Test</h1>
+</head>
+<body>
+  <form id="todoForm">
+    <input id="userInput" placeholder="Name" />
+    <input id="todoInput" placeholder="Todo" />
+    <button id="submit-data">Add Todo</button>
+  </form>
+
+  <p id="response"></p>
+
+  <script>
+    const form = document.getElementById("todoForm");
+    const responseElement = document.getElementById("response");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("userInput").value;
+      const todo = document.getElementById("todoInput").value;
+
+      const res = await fetch("/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, todo }),
+      });
+
+      const data = await res.json();
+      responseElement.textContent = data.message || data.error;
+    });
+  </script>
+</body>
+</html>
