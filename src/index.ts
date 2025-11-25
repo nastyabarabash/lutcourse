@@ -107,13 +107,28 @@ router.put("/update", (req: Request, res: Response) => {
   const { name, todo } = req.body;
   const users = readUsers();
 
-  const user = users.find(u => u.name.toLowerCase() === name.toLowerCase());
-  if (!user) return res.json({ message: "User not found" });
+  if (!name || !todo) {
+    return res.status(400).json({ message: "Name and todo are required" });
+  }
 
-  user.todos = user.todos.filter(t => t !== todo);
+  const normalizedName = name.trim().toLowerCase();
+
+  const user = users.find(u => u.name.toLowerCase() === normalizedName);
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  const todoIndex = user.todos.indexOf(todo);
+  if (todoIndex === -1) {
+    return res.status(404).json({ message: "Todo not found" });
+  }
+
+  user.todos.splice(todoIndex, 1);
 
   writeUsers(users);
-  res.json({ message: "Todo deleted successfully." });
+
+  return res.json({ message: "Todo deleted successfully." });
 });
 
 export default router;
