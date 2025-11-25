@@ -9,37 +9,49 @@ type TUser = {
   todos: string[];
 };
 
-const dataFile = path.join(process.cwd(), "data.json");
-let users: TUser[] = [];
+const dataFile = path.join(__dirname, "../data.json");
 
-fs.readFile(dataFile, "utf8", (err, data) => {
-  if (err) {
-    if (err.code === "ENOENT") {
-      fs.writeFile(dataFile, JSON.stringify([]), (err) => {
-        if (err) console.error("Error creating data.json:", err);
-      });
-    } else {
-      console.error("Error reading data.json:", err);
-    }
-    users = [];
-    return;
-  }
-
-  try {
-    users = JSON.parse(data) as TUser[];
-  } catch (error: any) {
-    console.error(`Error parsing JSON: ${error}`);
-    users = [];
-  }
-});
-
-function saveUsers() {
-  fs.writeFile(dataFile, JSON.stringify(users, null, 2), (err) => {
-    if (err) console.error("Error writing data.json:", err);
-  });
+if (!fs.existsSync(dataFile)) {
+  fs.writeFileSync(dataFile, JSON.stringify([]));
 }
 
+let users: TUser[] = [];
+
+function readUsers(): TUser[] {
+  const data = fs.readFileSync(dataFile, "utf8");
+  return JSON.parse(data);
+}
+
+function writeUsers(users: TUser[]) {
+  fs.writeFileSync(dataFile, JSON.stringify(users, null, 2));
+}
+
+// fs.access(dataFile, (err) => {
+//   if (err) {
+//     fs.writeFile(dataFile, "[]", () => {});
+//   } else {
+//     fs.readFile(dataFile, "utf8", (err, data) => {
+//       if (!err) {
+//         try {
+//           users = JSON.parse(data);
+//         } catch {
+//           users = [];
+//         }
+//       }
+//     });
+//   }
+// });
+
+// function saveToFile() {
+//   fs.writeFile(dataFile, JSON.stringify(users, null, 2), () => {});
+// }
+
+// function formatName(name: string) {
+//   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+// }
+
 router.get("/users", (req: Request, res: Response) => {
+  const users = readUsers();
   res.json(users);
 });
 
@@ -50,80 +62,57 @@ router.post("/add", (req: Request, res: Response) => {
     return res.status(400).json({ error: "Name and todo are required" });
   }
 
-  const normalizedName = name.trim().toLowerCase();
+  const users = readUsers();
+  const lower = name.toLowerCase();
 
-  let user = users.find((u) => u.name.toLowerCase() === normalizedName);
+  let user = users.find(u => u.name.toLowerCase() === lower);
 
   if (user) {
     user.todos.push(todo);
   } else {
-    user = { name: name.trim(), todos: [todo] };
-    users.push(user);
+    const properName = name[0].toUpperCase() + name.slice(1).toLowerCase();
+    users.push({ name: properName, todos: [todo] });
   }
 
-  res.json({ message: `Todo added successfully for user ${user.name}.` });
+  writeUsers(users);
+
+  res.json({ message: `Todo added successfully for user ${name}.` });
 });
 
 router.get("/todos/:id", (req: Request, res: Response) => {
-  const name = req.params.id;
+  const id = req.params.id ?? "";
+  const users = readUsers();
 
-  if (!name) {
-    return res.status(400).json({ message: "Name is required" });
-  }
-
-  const normalizedName = name.trim().toLowerCase();
-
-  const user = users.find((u) => u.name.toLowerCase() === normalizedName);
-
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  }
+  const user = users.find(u => u.name.toLowerCase() === id.toLowerCase());
+  if (!user) return res.json({ message: "User not found" });
 
   res.json({ name: user.name, todos: user.todos });
 });
 
 router.delete("/delete", (req: Request, res: Response) => {
   const { name } = req.body;
+  const users = readUsers();
 
-  if (!name) {
-    return res.status(400).json({ message: "Name is required" });
+  const filtered = users.filter(u => u.name.toLowerCase() !== name.toLowerCase());
+
+  if (filtered.length === users.length) {
+    return res.json({ message: "User not found" });
   }
 
-  const normalizedName = name.trim().toLowerCase();
-
-  const userIndex = users.findIndex((u) => u.name.toLowerCase() === normalizedName);
-
-  if (userIndex === -1) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  users.splice(userIndex, 1);
-
+  writeUsers(filtered);
   res.json({ message: "User deleted successfully." });
 });
 
 router.put("/update", (req: Request, res: Response) => {
   const { name, todo } = req.body;
+  const users = readUsers();
 
-  if (!name || !todo) {
-    return res.status(400).json({ message: "Name and todo are required" });
-  }
+  const user = users.find(u => u.name.toLowerCase() === name.toLowerCase());
+  if (!user) return res.json({ message: "User not found" });
 
-  const normalizedName = name.trim().toLowerCase();
+  user.todos = user.todos.filter(t => t !== todo);
 
-  const user = users.find((u) => u.name.toLowerCase() === normalizedName);
-
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  const todoIndex = user.todos.indexOf(todo);
-  if (todoIndex === -1) {
-    return res.status(404).json({ message: "Todo not found" });
-  }
-
-  user.todos.splice(todoIndex, 1);
-  saveUsers();
+  writeUsers(users);
   res.json({ message: "Todo deleted successfully." });
 });
 
