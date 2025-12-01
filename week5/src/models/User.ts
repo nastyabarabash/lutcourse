@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface ITodo {
-  todos: string
+  todo: string
 }
 
 interface IUser extends Document {
@@ -10,7 +10,7 @@ interface IUser extends Document {
 }
 
 let todoSchema: Schema<ITodo> = new Schema({
-  todos: {type: String, required: true}
+  todo: {type: String, required: true}
 })
 
 let userSchema: Schema<IUser> = new Schema({
@@ -18,4 +18,7 @@ let userSchema: Schema<IUser> = new Schema({
   todos: { type: [todoSchema], default: [] }
 })
 
-export default mongoose.model<IUser>("User", userSchema);
+const User = mongoose.model<IUser>("User", userSchema);
+
+export { User };
+// export type { IUser, ITodo };
