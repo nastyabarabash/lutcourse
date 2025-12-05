@@ -43,34 +43,23 @@ router.get("/api/user", async (req: Request, res: Response) => {
 //   res.json({});
 // });
 
-router.get("/api/users/:id", async (req: Request, res: Response) => {
-  try {
-    const user: IUser | null = await User.findById(req.params.id)
-    if (!user) {
-      return res.status(404).json({message: "No user found"})
-    }
-    return res.json(user)
-  } catch (error: any) {
-    console.log(`Error while fetching users: ${error}`)
-    return res.status(500).json({message: "Internal server error"})
-  }
-});
-
 router.post("/add", async (req: Request, res: Response) => {
-  const { name, todo } = req.body;
+  const { name, todo, checked } = req.body;
 
   if (!name || !todo) {
     return res.status(400).json({ message: "Missing name or todo" });
   }
 
   try {
-    let user = await User.findOne({ name });
+    let user = await User.findOne({
+      name: { $regex: `^${name}$`, $options: "i" }
+    });
 
     if (!user) {
       user = new User({ name, todos: [] });
     }
 
-    user.todos.push({ todo });
+    user.todos.push({ todo, checked: checked ?? false });
 
     await user.save();
 
@@ -95,5 +84,54 @@ router.get("/api/users/populate", async (req: Request, res: Response) => {
   console.log("Database populated")
   res.json({message: "database populated"})
 }) 
+
+router.get("/todos/:name", async (req: Request, res: Response) => {
+  try {
+    const userName = req.params.name;
+    if (!userName) {
+      return res.status(400).json({ message: "User name is required" });
+    }
+
+    const user: IUser | null = await User.findOne({
+      name: { $regex: new RegExp(`^${userName}$`, "i") }
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.put("/updateTodo", async (req: Request, res: Response) => {
+  try {
+    const { name, todo } = req.body;
+
+    if (!name || !todo) {
+      return res.status(400).json({ message: "Missing name or todo" });
+    }
+
+    const user = await User.findOne({ name: { $regex: `^${name}$`, $options: "i" } });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const originalLength = user.todos.length;
+    user.todos = user.todos.filter((t) => t.todo !== todo);
+
+    if (user.todos.length === originalLength) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+
+    await user.save();
+
+    res.json({ message: "Todo deleted successfully." });
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 export default router;

@@ -26,7 +26,6 @@
   <div id="userSection" style="display:none;">
     <h2>Todos for <span id="userName"></span></h2>
     <ul id="todoList"></ul>
-    <button id="deleteUser">Delete User</button>
   </div>
 
   <p id="message"></p>
@@ -109,33 +108,68 @@
 
     function renderTodos(user) {
       todoList.innerHTML = "";
-      user.todos.forEach((todo) => {
+    
+      if (!user.todos || !user.todos.length) {
+        todoList.innerHTML = "<li>No todos found for this user</li>";
+        return;
+      }
+    
+      user.todos.forEach((t) => {
         const li = document.createElement("li");
-        const a = document.createElement("a");
-        a.href = "#";
-        a.className = "delete-task";
-        a.textContent = todo;
-
-        a.addEventListener("click", async (e) => {
-          e.preventDefault();
+        li.style.listStyle = "none";
+    
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = "myCheckbox";
+        checkbox.className = "checkBoxes";
+        checkbox.checked = t.checked; // set initial state
+        checkbox.style.marginRight = "8px";
+    
+        const span = document.createElement("span");
+        span.textContent = t.todo;
+    
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete Todo";
+        deleteBtn.className = "delete-task";
+        deleteBtn.style.marginLeft = "10px";
+    
+        checkbox.addEventListener("change", async () => {
+          try {
+            const res = await fetch("/updateTodo", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name: user.name, todo: t.todo, checked: checkbox.checked }),
+            });
+            const data = await res.json();
+            messageEl.textContent = data.message;
+          } catch (err) {
+            console.error(err);
+            messageEl.textContent = "Error updating todo.";
+          }
+        });
+    
+        deleteBtn.addEventListener("click", async () => {
           try {
             const res = await fetch("/update", {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ name: user.name, todo }),
+              body: JSON.stringify({ name: user.name, todo: t.todo }),
             });
             const data = await res.json();
             messageEl.textContent = data.message;
-            li.remove(); // remove from displayed list
+            li.remove();
           } catch (err) {
             console.error(err);
+            messageEl.textContent = "Error deleting todo.";
           }
         });
-
-        li.appendChild(a);
+    
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
         todoList.appendChild(li);
       });
-    }
+    }                
   </script>
 </body>
 
