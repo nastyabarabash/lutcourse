@@ -1,7 +1,5 @@
 import { Request, Response, Router } from "express";
-import { User, IUser } from "./models/User";
 import { Offer } from "./models/Offer";
-import populateUsers from "../data/users";
 
 const router: Router = Router();
 
