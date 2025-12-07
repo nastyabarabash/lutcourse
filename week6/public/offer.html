@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create offer</title>
+</head>
+
+<body>
+  <h1>Create a new offer</h1>
+
+  <form id="offerForm">
+    <label for="title">Title:</label><br />
+    <input type="text" id="title" required /><br /><br />
+
+    <label for="price">Price:</label><br />
+    <input type="number" id="price" required /><br /><br />
+
+    <label for="description">Description:</label><br />
+    <textarea id="description" rows="4" required></textarea><br /><br />
+
+    <label for="image">Upload image:</label><br />
+    <input type="file" id="image" /><br /><br />
+
+    <button type="submit">Submit Offer</button>
+  </form>
+
+  <p id="msg"></p>
+
+  <script src="js/offer.js" defer></script>
+</body>
+</html>
