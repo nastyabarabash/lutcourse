@@ -1,0 +1,12 @@
+body, .card-panel {
+  background-color: white;
+}
+
+.center-align {
+  color: black
+}
+
+.btn {
+  color: white;
+  background-color: aquamarine;
+}
