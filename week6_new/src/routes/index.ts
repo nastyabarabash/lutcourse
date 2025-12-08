@@ -3,8 +3,6 @@ import { Offer } from "../models/Offer";
 
 const router: Router = Router();
 
-let msg: string[] = [];
-
 router.post("/upload", async (req: Request, res: Response) => {
   try {
     const { title, description, price } = req.body;
