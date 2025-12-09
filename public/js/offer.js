@@ -1,5 +1,4 @@
 const form = document.getElementById("offerForm");
-const msg = document.getElementById("msg");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -13,10 +12,8 @@ form.addEventListener("submit", async (e) => {
     });
 
     const data = await res.json();
-    msg.textContent = data.message;
     form.reset();
   } catch (err) {
     console.error(err);
-    msg.textContent = "Error submitting offer.";
   }
 });
