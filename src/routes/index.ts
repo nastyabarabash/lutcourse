@@ -13,7 +13,11 @@ router.post("/upload", upload.single("image"), async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    let imageId = null;
+    const offerData: any = { 
+      title, 
+      description, 
+      price: Number(price) 
+    };
 
     if (req.file) {
       const img = await Image.create({
@@ -21,15 +25,10 @@ router.post("/upload", upload.single("image"), async (req, res) => {
         path: `/images/${req.file.filename}`
       });
 
-      imageId = img._id;
+      offerData.imageId = img._id;
     }
 
-    const offer = new Offer({
-      title,
-      description,
-      price
-    });
-
+    const offer = new Offer(offerData);
     await offer.save();
 
     res.status(201).json({ message: "Offer saved successfully", offer });
