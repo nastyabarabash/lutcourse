@@ -6,7 +6,13 @@ const storage: StorageEngine = multer.diskStorage({
     cb(null, './public/images')
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    const ext = path.extname(file.originalname);
+    const base = path.basename(file.originalname, ext);
+    import("uuid").then(({ v4: uuidv4 }) => {
+      const id = uuidv4();
+      const filename = `${base}_${id}${ext}`;
+      cb(null, filename); 
+    }).catch(err => cb(err, ""));
   }
 })
 
