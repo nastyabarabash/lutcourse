@@ -1,4 +1,5 @@
 const form = document.getElementById("offerForm");
+const offersContainer = document.getElementById("offersContainer");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -13,7 +14,6 @@ form.addEventListener("submit", async (e) => {
 
     const data = await res.json();
     if (res.ok) {
-      console.log("Offer submitted:", data.offer);
       form.reset();
     } else {
       console.error("Error submitting offer:", data.message);
@@ -22,3 +22,15 @@ form.addEventListener("submit", async (e) => {
     console.error("Error submitting offer:", err);
   }
 });
+
+async function loadOffers() {
+  try {
+    const res = await fetch("/offers");
+    const offers = await res.json();
+    console.log("Loaded offers:", offers);
+  } catch (err) {
+    console.error("Error loading offers:", err);
+  }
+}
+
+window.addEventListener("DOMContentLoaded", loadOffers);
