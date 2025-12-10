@@ -12,8 +12,13 @@ form.addEventListener("submit", async (e) => {
     });
 
     const data = await res.json();
-    form.reset();
+    if (res.ok) {
+      console.log("Offer submitted:", data.offer);
+      form.reset();
+    } else {
+      console.error("Error submitting offer:", data.message);
+    }
   } catch (err) {
-    console.error(err);
+    console.error("Error submitting offer:", err);
   }
 });
