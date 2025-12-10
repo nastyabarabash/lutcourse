@@ -42,7 +42,7 @@ body, .card-panel {
 
 .file-field .file-path-wrapper input.file-path::placeholder {
   color: #aaa;
-  opacity: 1;
+  /* opacity: 1; */
 }
 
 .file-field .btn {
