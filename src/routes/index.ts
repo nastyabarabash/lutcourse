@@ -40,16 +40,19 @@ const router: Router = Router();
 //   }
 // });
 
-router.post("/upload", async (req: Request, res: Response, next) => {
+router.post("/upload", (req: Request, res: Response, next) => {
   const contentType = req.headers["content-type"] || "";
+  const isMultipart = contentType.startsWith("multipart/form-data");
 
-  if (contentType.startsWith("multipart/form-data")) {
+  const finish = () => handleOffer(req, res).catch(next);
+
+  if (isMultipart) {
     upload.single("image")(req, res, (err) => {
       if (err) return next(err);
-      handleOffer(req, res);
+      finish();
     });
   } else {
-    handleOffer(req, res);
+    finish();
   }
 });
 
