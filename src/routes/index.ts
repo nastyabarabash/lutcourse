@@ -7,7 +7,8 @@ const router: Router = Router();
 
 router.post("/upload", upload.single("image"), async (req, res) => {
   try {
-    const { title, description, price } = req.body;
+    const body = req.body || {};
+    const { title, description, price } = body;
 
     if (!title || !description || !price) {
       return res.status(400).json({ message: "Missing required fields" });
