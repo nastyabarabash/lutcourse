@@ -40,7 +40,7 @@ const router: Router = Router();
 //   }
 // });
 
-router.post("/upload", async (req, res, next) => {
+router.post("/upload", async (req: Request, res: Response, next) => {
   const contentType = req.headers["content-type"] || "";
 
   if (contentType.startsWith("multipart/form-data")) {
@@ -61,10 +61,10 @@ async function handleOffer(req: any, res: any) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const offerData: any = { 
+    const offerData: any = {
       title,
       description,
-      price: Number(price)
+      price: Number(price),
     };
 
     if (req.file) {
@@ -73,7 +73,6 @@ async function handleOffer(req: any, res: any) {
         path: `/images/${req.file.filename}`,
       });
       await image.save();
-
       offerData.imageId = image._id;
     }
 
@@ -81,8 +80,8 @@ async function handleOffer(req: any, res: any) {
     await offer.save();
 
     return res.status(201).json({ message: "Offer saved successfully", offer });
-  } catch (error) {
-    console.error("Error saving offer:", error);
+  } catch (err) {
+    console.error(err);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
