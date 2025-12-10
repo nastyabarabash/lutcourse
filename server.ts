@@ -7,7 +7,7 @@ import mongoose, { Connection } from "mongoose"
 const app: Express = express()
 const port = 3000
 
-const mongoDB: string = "mongodb://127.0.0.1:27017/imagedb"
+const mongoDB: string = "mongodb://127.0.0.1:27017/testdb"
 mongoose.connect(mongoDB)
 mongoose.Promise = Promise
 const db: Connection = mongoose.connection
