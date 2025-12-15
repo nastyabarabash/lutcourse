@@ -33,4 +33,26 @@ async function loadOffers() {
   }
 }
 
-window.addEventListener("DOMContentLoaded", loadOffers);
+const listOfUsers = async () => {
+  const response = await fetch("/api/user/list", {
+    method: "GET",
+    headers: {}
+  })
+
+  if (!response.ok) {
+    document.getElementById("error").textContent = "Error while fetching users."
+  } else {
+    const data = await response.json()
+    let users = ''
+    data.map(user => {
+      users += `<li>Email ${user.email}, ID: ${user._id}</li>`
+    })
+    document.getElementById("user-list").innerHTML = users
+  }
+}
+
+
+window.addEventListener("DOMContentLoaded", () => {
+  listOfUsers()
+  loadOffers()
+})
