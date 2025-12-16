@@ -34,7 +34,7 @@ async function loadOffers() {
 }
 
 const listOfUsers = async () => {
-  const response = await fetch("/list", {
+  const response = await fetch("api/user/list", {
     method: "GET",
     headers: {}
   })

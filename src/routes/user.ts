@@ -44,6 +44,10 @@ router.post("/login",
   body("email").escape(),
   body("password").escape(), 
   async (req: Request, res: Response) => {
+    if (!req.body || !req.body.email || !req.body.password) {
+      return res.status(400).json({ error: "Missing email or password" })
+    }
+    
     try {
       const user: IUser | null = await User.findOne({email: req.body.email})
 
