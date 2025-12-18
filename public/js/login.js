@@ -26,6 +26,11 @@ const fetchData = async (event) => {
     } else {
       const data = await response.json()
       console.log(data)
+
+      if(data.token) {
+        localStorage.setItem("auth_token", data.token)
+        window.location.href = "index.html"
+      }
     }
   } catch (error) {
     console.log(`Error while trying to login: ${error.message}`)

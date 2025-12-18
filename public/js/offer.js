@@ -34,9 +34,15 @@ async function loadOffers() {
 }
 
 const listOfUsers = async () => {
+  const token = localStorage.getItem("auth_token")
+
+  if(!token) return
+
   const response = await fetch("api/user/list", {
     method: "GET",
-    headers: {}
+    headers: {
+      "authorization": `Bearer ${token}`
+    }
   })
 
   if (!response.ok) {
