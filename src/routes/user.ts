@@ -8,8 +8,8 @@ import { validateToken } from "../middleware/validateToken"
 const router: Router = Router();
 
 router.post("/register", 
-  body("email").isEmail(),
-  body("password").isLength({min: 4}), 
+  body("email").isEmail().normalizeEmail(),
+  body("password").isLength({ min: 4 }).trim(), 
   async (req: Request, res: Response) => {
     const errors: Result<ValidationError> = validationResult(req)
 
@@ -26,7 +26,6 @@ router.post("/register",
 
       const salt: string = bcrypt.genSaltSync(10)
       const hash: string = bcrypt.hashSync(req.body.password, salt)
-
       const user = await User.create({
         email: req.body.email,
         password: hash
@@ -34,7 +33,10 @@ router.post("/register",
       return res.status(200).json({email: user.email, password: user.password})
 
     } catch (error: any) {
-      console.error(`Error during registration: ${error}`)
+      if (error.code === 11000) { 
+        return res.status(403).json({ error: "email already in use" })
+      }
+      console.log("Error during registration:", error)
       return res.status(500).json({error: "Internal Server Error"})
     }
   }
@@ -44,7 +46,7 @@ router.post("/login",
   body("email").isEmail(),
   body("password").notEmpty(), 
   async (req: Request, res: Response) => {
-    if (!req.body || !req.body.email || !req.body.password) {
+    if (!req.body.email || !req.body.password) {
       return res.status(400).json({ error: "Missing email or password" })
     }
 
