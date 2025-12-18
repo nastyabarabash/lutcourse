@@ -37,7 +37,7 @@ router.post("/register",
         return res.status(403).json({ error: "email already in use" })
       }
       console.log("Error during registration:", error)
-      return res.status(500).json({error: "Internal Server Error"})
+      return res.status(500).json({ error: `Error during registration: ${error.message}` })
     }
   }
 )
