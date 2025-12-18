@@ -8,8 +8,8 @@ import { validateToken } from "../middleware/validateToken"
 const router: Router = Router();
 
 router.post("/register", 
-  body("email").isLength({min: 3}).escape(),
-  body("password").isLength({min: 5}), 
+  body("email").isEmail(),
+  body("password").isLength({min: 4}), 
   async (req: Request, res: Response) => {
     const errors: Result<ValidationError> = validationResult(req)
 
@@ -41,8 +41,8 @@ router.post("/register",
 )
 
 router.post("/login",
-  body("email").escape(),
-  body("password").escape(), 
+  body("email").isEmail(),
+  body("password").notEmpty(), 
   async (req: Request, res: Response) => {
     if (!req.body || !req.body.email || !req.body.password) {
       return res.status(400).json({ error: "Missing email or password" })
