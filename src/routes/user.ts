@@ -31,7 +31,7 @@ router.post("/register",
         email: req.body.email,
         password: hash
       })
-      return res.status(200).json({id: user._id, email: user.email})
+      return res.status(200).json({email: user.email, password: user.password})
 
     } catch (error: any) {
       console.error(`Error during registration: ${error}`)
@@ -47,7 +47,7 @@ router.post("/login",
     if (!req.body || !req.body.email || !req.body.password) {
       return res.status(400).json({ error: "Missing email or password" })
     }
-    
+
     try {
       const user: IUser | null = await User.findOne({email: req.body.email})
 

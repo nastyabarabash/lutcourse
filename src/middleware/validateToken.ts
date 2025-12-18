@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction, response } from "express"
 import jwt, {JwtPayload} from "jsonwebtoken"
 import dotenv from "dotenv"
-import { Cursor } from "mongoose"
 
 dotenv.config()
 
