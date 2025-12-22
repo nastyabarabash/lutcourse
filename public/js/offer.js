@@ -51,7 +51,7 @@ const listOfUsers = async () => {
     const data = await response.json()
     let users = ''
     data.map(user => {
-      users += `<li>Email ${user.email}, ID: ${user._id}</li>`
+      users += `<li>Email ${user.email}, ID: ${user.id}</li>`
     })
     document.getElementById("user-list").innerHTML = users
   }
