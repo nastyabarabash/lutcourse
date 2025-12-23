@@ -91,60 +91,67 @@ const generateId = () =>
 // })
 
 router.post("/register", (req: Request, res: Response) => {
-  const { email, password } = req.body
+  const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ error: "Missing email or password" })
+    return res.status(400).json({ error: "Missing email or password" });
   }
 
-  const existingUser = users.find(user => user.email === email)
+  const normalizedEmail = email.trim().toLowerCase();
+  const existingUser = users.find(user => user.email === normalizedEmail);
+
   if (existingUser) {
-    return res.status(403).json({ error: "email already in use" })
+    return res.status(403).json({ error: "email already in use" });
   }
 
-  const hash = bcrypt.hashSync(password, 10)
+  const hash = bcrypt.hashSync(password, 10);
 
   const newUser = {
-  id: generateId(),
-  email,
-  password: hash
-}
+    id: generateId(),
+    email: normalizedEmail,
+    password: hash
+  };
 
-  users.push(newUser)
+  users.push(newUser);
 
-  return res.status(200).json(newUser)
-})
+  return res.status(200).json(newUser);
+});
 
 router.post("/login", (req: Request, res: Response) => {
-  const { email, password } = req.body
+  console.log("HEADERS:", req.headers["content-type"]);
+  console.log("BODY:", req.body);
+  const { email, password } = req.body || {};
+  console.log("BODY1:", req.body);
 
   if (!email || !password) {
-    return res.status(400).json({ error: "Missing email or password" })
+    return res.status(400).json({ error: "Missing email or password" });
   }
 
-  const user = users.find(user => user.email === email)
+  const normalizedEmail = email.trim().toLowerCase();
+  const user = users.find(user => user.email === normalizedEmail);
 
   if (!user) {
-    return res.status(403).json({ error: "Login failed." })
+    return res.status(403).json({ error: "Login failed." });
   }
 
-  const passwordMatches = bcrypt.compareSync(password, user.password)
+  const passwordMatches = bcrypt.compareSync(password, user.password);
   if (!passwordMatches) {
-    return res.status(401).json({ error: "Login failed." })
+    return res.status(401).json({ error: "Login failed." });
   }
 
-  const payload: JwtPayload = { email: user.email }
-  const token = jwt.sign(payload, process.env.SECRET as string, {
-    expiresIn: "2m"
-  })
+  if (!process.env.SECRET) {
+    return res.status(500).json({ error: "JWT secret not defined" });
+  }
 
-  return res.status(200).json({ success: true, token })
-})
+  const payload: JwtPayload = { id: user.id, email: user.email };
+  const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "2m" });
+
+  return res.status(200).json({ success: true, token });
+});
 
 
 router.get("/list", (req: Request, res: Response) => {
   return res.status(200).json(users)
 })
-
 
 export default router
