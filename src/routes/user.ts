@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt, { JwtPayload } from "jsonwebtoken"
 // import { v4 as uuidv4 } from "uuid"
 // import { User, IUser } from "../models/User";
-// import { validateToken } from "../middleware/validateToken"
+import { validateToken } from "../middleware/validateToken"
 
 const router: Router = Router();
 const users: { id: string; email: string; password: string }[] = []
@@ -90,7 +90,7 @@ const generateId = () =>
 //   }
 // })
 
-router.post("/register", (req: Request, res: Response) => {
+router.post("/user/register", (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -117,7 +117,7 @@ router.post("/register", (req: Request, res: Response) => {
   return res.status(200).json(newUser);
 });
 
-router.post("/login", (req: Request, res: Response) => {
+router.post("/user/login", (req: Request, res: Response) => {
   const { email, password } = req.body || {};
 
   if (!email || !password) {
@@ -145,8 +145,12 @@ router.post("/login", (req: Request, res: Response) => {
 });
 
 
-router.get("/list", (req: Request, res: Response) => {
+router.get("/user/list", (req: Request, res: Response) => {
   return res.status(200).json(users)
 })
+
+router.get("/private", validateToken, (req, res) => {
+  res.status(200).json({ message: "This is protected secure route!" });
+});
 
 export default router

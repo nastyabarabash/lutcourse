@@ -34,9 +34,27 @@ async function loadOffers() {
 }
 
 const listOfUsers = async () => {
-  const token = localStorage.getItem("auth_token")
+  const token = localStorage.getItem("token")
 
-  if(!token) return
+  if (!token) {
+    window.location.href = "/login.html";
+    return;
+  }
+
+  const privateResponse = await fetch("/api/private", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (!privateResponse.ok) {
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+    return;
+  }
+
+  const privateData = await privateResponse.json();
+  console.log(privateData.message);
 
   const response = await fetch("api/user/list", {
     method: "GET",
@@ -56,7 +74,6 @@ const listOfUsers = async () => {
     document.getElementById("user-list").innerHTML = users
   }
 }
-
 
 window.addEventListener("DOMContentLoaded", () => {
   listOfUsers()
