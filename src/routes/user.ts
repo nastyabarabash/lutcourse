@@ -136,10 +136,10 @@ router.post("/login", (req: Request, res: Response) => {
     return res.status(401).json({ error: "Login failed." });
   }
 
-  // const JWT_SECRET = process.env.SECRET || "test_secret";
+  const JWT_SECRET = process.env.SECRET || "test_secret";
   const payload: JwtPayload = { email: email };
 
-  const token = jwt.sign(payload, process.env.SECRET as string, { expiresIn: "2m" });
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "2m" });
 
   return res.status(200).json({ success: true, token });
 });
