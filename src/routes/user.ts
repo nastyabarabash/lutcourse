@@ -118,17 +118,14 @@ router.post("/register", (req: Request, res: Response) => {
 });
 
 router.post("/login", (req: Request, res: Response) => {
-  console.log("HEADERS:", req.headers["content-type"]);
-  console.log("BODY:", req.body);
   const { email, password } = req.body || {};
-  console.log("BODY1:", req.body);
 
   if (!email || !password) {
     return res.status(400).json({ error: "Missing email or password" });
   }
 
   const normalizedEmail = email.trim().toLowerCase();
-  const user = users.find(user => user.email === normalizedEmail);
+  const user = users.find(u => u.email === normalizedEmail);
 
   if (!user) {
     return res.status(403).json({ error: "Login failed." });
@@ -139,12 +136,10 @@ router.post("/login", (req: Request, res: Response) => {
     return res.status(401).json({ error: "Login failed." });
   }
 
-  if (!process.env.SECRET) {
-    return res.status(500).json({ error: "JWT secret not defined" });
-  }
+  const JWT_SECRET = process.env.SECRET || "test_secret";
+  const payload: JwtPayload = { email: user.email };
 
-  const payload: JwtPayload = { id: user.id, email: user.email };
-  const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "2m" });
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "2m" });
 
   return res.status(200).json({ success: true, token });
 });
