@@ -34,7 +34,7 @@ async function loadOffers() {
 }
 
 const listOfUsers = async () => {
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("auth-token")
 
   if (!token) {
     window.location.href = "/login.html";
@@ -48,7 +48,7 @@ const listOfUsers = async () => {
   });
 
   if (!privateResponse.ok) {
-    localStorage.removeItem("token");
+    localStorage.removeItem("auth-token");
     window.location.href = "/login.html";
     return;
   }
@@ -81,11 +81,8 @@ window.addEventListener("DOMContentLoaded", () => {
 })
 
 const logout = () => {
-  localStorage.removeItem("token");
-  
-  setTimeout(() => {
-    window.location.href = "/login.html";
-  }, 0);
+  localStorage.removeItem("auth-token");
+  window.location.href = "/login.html";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
