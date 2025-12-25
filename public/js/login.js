@@ -27,7 +27,7 @@ const fetchData = async (event) => {
     }
 
     if (data.token) {
-      localStorage.setItem("auth-token", data.token);
+      localStorage.setItem("token", data.token);
       window.location.href = "/";
     }
   } catch (error) {

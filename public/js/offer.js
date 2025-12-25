@@ -34,7 +34,7 @@ async function loadOffers() {
 }
 
 const listOfUsers = async () => {
-  const token = localStorage.getItem("auth-token")
+  const token = localStorage.getItem("token")
 
   if (!token) {
     window.location.href = "/login.html";
@@ -48,7 +48,7 @@ const listOfUsers = async () => {
   });
 
   if (!privateResponse.ok) {
-    localStorage.removeItem("auth-token");
+    localStorage.removeItem("token");
     window.location.href = "/login.html";
     return;
   }
@@ -59,7 +59,7 @@ const listOfUsers = async () => {
   const response = await fetch("api/user/list", {
     method: "GET",
     headers: {
-      "authorization": `Bearer ${token}`
+      Authorization: `Bearer ${token}`
     }
   })
 
@@ -81,7 +81,7 @@ window.addEventListener("DOMContentLoaded", () => {
 })
 
 const logout = () => {
-  localStorage.removeItem("auth-token");
+  localStorage.removeItem("token");
   window.location.href = "/login.html";
 }
 

@@ -150,7 +150,7 @@ router.get("/user/list", (req: Request, res: Response) => {
 })
 
 router.get("/private", validateToken, (req, res) => {
-  res.status(200).json({ message: "This is protected secure route!" });
+  return res.status(200).json({ message: "This is protected secure route!" });
 });
 
 export default router
