@@ -79,3 +79,11 @@ window.addEventListener("DOMContentLoaded", () => {
   listOfUsers()
   loadOffers()
 })
+
+const logout = () => {
+  localStorage.removeItem("token");
+  window.location.href = "/index.html";
+  return;
+}
+
+document.getElementById("logout").addEventListener("click", logout)
