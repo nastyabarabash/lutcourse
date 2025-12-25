@@ -86,8 +86,5 @@ const logout = () => {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const logoutButton = document.getElementById("logout");
-  if (logoutButton) {
-    logoutButton.addEventListener("click", logout);
-  }
+  document.getElementById("logout").addEventListener("click", logout);
 });
