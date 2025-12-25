@@ -14,7 +14,7 @@ export const validateToken = (req: CustomRequest, res: Response, next: NextFunct
   if(!token) return res.status(401).json({ message: "Access denied, missing token" })
 
   try {
-    const verified: JwtPayload = jwt.verify(token, process.env.SECRET as string) as JwtPayload
+    const verified: JwtPayload = jwt.verify(token, process.env.SECRET || "test_secret") as JwtPayload
     req.user = verified
     next()
   } catch (error: any) {
