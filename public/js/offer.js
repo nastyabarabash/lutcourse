@@ -82,7 +82,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
 const logout = () => {
   localStorage.removeItem("token");
-  window.location.href = "/login.html";
+  
+  setTimeout(() => {
+    window.location.href = "/login.html";
+  }, 0);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
