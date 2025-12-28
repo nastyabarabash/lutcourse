@@ -23,7 +23,20 @@ const fetchData = async (event) => {
     })
     
     if (!response.ok) {
-      document.getElementById("error").innerText = "Error when trying to register. Please try again later"
+      const data = await response.json();
+    
+      if (data.errors && Array.isArray(data.errors)) {
+        // show all validation errors
+        document.getElementById("error").innerHTML =
+          data.errors.map(err => `• ${err.msg}`).join("<br>");
+      } else if (data.error) {
+        document.getElementById("error").innerText = data.error;
+      } else {
+        document.getElementById("error").innerText =
+          "Error when trying to register.";
+      }
+    
+      return;
     } else {
       window.location.href = "login.html"
     }

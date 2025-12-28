@@ -5,6 +5,7 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 // import { v4 as uuidv4 } from "uuid"
 import { User, IUser } from "../models/User";
 import { validateToken } from "../middleware/validateToken"
+import { emailValidator, usernameValidator, passwordRegisterValidator, passwordLoginValidator } from "../validators/inputValidation"
 
 const router: Router = Router();
 // const users: { id: string; email: string; password: string }[] = []
@@ -13,9 +14,9 @@ const router: Router = Router();
 
 
 router.post("/user/register", 
-  body("email").isEmail().normalizeEmail(),
-  body("password").isLength({ min: 4 }).trim(),
-  body("username").isLength({ min: 3 }).trim(),
+  emailValidator,
+  usernameValidator,
+  passwordRegisterValidator,
   async (req: Request, res: Response) => {
     const errors: Result<ValidationError> = validationResult(req)
     // const { email, password, username } = req.body
@@ -55,8 +56,8 @@ router.post("/user/register",
 )
 
 router.post("/user/login",
-  body("email").isEmail(),
-  body("password").notEmpty(), 
+  emailValidator,
+  passwordLoginValidator, 
   async (req: Request, res: Response) => {
     if (!req.body.email || !req.body.password) {
       return res.status(400).json({ error: "Missing email or password" })
@@ -74,7 +75,8 @@ router.post("/user/login",
           username: user.username,
           isAdmin: user.isAdmin,
         }
-        const token: string = jwt.sign(jwtPayload, process.env.SECRET as string, { expiresIn: "2h" })
+        const JWT_SECRET = process.env.SECRET || "test_secret";
+        const token: string = jwt.sign(jwtPayload, JWT_SECRET, { expiresIn: "2h" })
         return res.status(200).json({success: true, token})
       }
       return res.status(401).json({ error: "Invalid password" })
