@@ -9,6 +9,7 @@ const fetchData = async (event) => {
 
   const formData = {
     email: event.target.email.value,
+    username: event.target.username.value,
     password: event.target.password.value,
   }
 

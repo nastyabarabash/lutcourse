@@ -41,20 +41,20 @@ const listOfUsers = async () => {
     return;
   }
 
-  const privateResponse = await fetch("/api/private", {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  // const privateResponse = await fetch("/api/private", {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`
+  //   }
+  // });
 
-  if (!privateResponse.ok) {
-    localStorage.removeItem("token");
-    window.location.href = "/login.html";
-    return;
-  }
+  // if (!privateResponse.ok) {
+  //   localStorage.removeItem("token");
+  //   window.location.href = "/login.html";
+  //   return;
+  // }
 
-  const privateData = await privateResponse.json();
-  console.log(privateData.message);
+  // const privateData = await privateResponse.json();
+  // console.log(privateData.message);
 
   const response = await fetch("api/user/list", {
     method: "GET",
@@ -69,7 +69,7 @@ const listOfUsers = async () => {
     const data = await response.json()
     let users = ''
     data.map(user => {
-      users += `<li>Email ${user.email}, ID: ${user.id}</li>`
+      users += `<li>Email ${user.email}, ID: ${user._id}</li>`
     })
     document.getElementById("user-list").innerHTML = users
   }
