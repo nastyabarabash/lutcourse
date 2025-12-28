@@ -40,7 +40,7 @@ router.post("/user/register",
         email: req.body.email,
         username: req.body.username,
         password: hash,
-        isAdmin: false,
+        isAdmin: true,
       })
       // return res.status(200).json({ id: user._id, email: user.email, username: user.username })
       return res.status(200).json(newUser)
