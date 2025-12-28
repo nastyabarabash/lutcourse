@@ -34,13 +34,16 @@ router.post("/user/register",
         return res.status(403).json({ error: "Email already in use." })
       }
 
+      const userCount = await User.countDocuments()
+      const isAdmin = userCount === 0
+
       const salt: string = bcrypt.genSaltSync(10)
       const hash: string = bcrypt.hashSync(req.body.password, salt)
       const newUser = await User.create({
         email: req.body.email,
         username: req.body.username,
         password: hash,
-        isAdmin: true,
+        isAdmin: isAdmin,
       })
       // return res.status(200).json({ id: user._id, email: user.email, username: user.username })
       return res.status(200).json(newUser)
