@@ -45,9 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function setupTopicForm(token) {
   const topicFormDiv = document.getElementById("topicForm");
-  if (!topicFormDiv) return;
-
-  topicFormDiv.innerHTML = "";
   const form = document.createElement("form");
 
   form.innerHTML = `
@@ -55,12 +52,10 @@ function setupTopicForm(token) {
       <input id="topicTitle" type="text" required />
       <label for="topicTitle">Title</label>
     </div>
-
     <div class="input-field">
       <textarea id="topicText" class="materialize-textarea" required></textarea>
       <label for="topicText">Content</label>
     </div>
-
     <button id="postTopic" type="submit" class="btn waves-effect waves-light">
       Post topic
     </button>
@@ -120,7 +115,7 @@ async function loadTopics(token) {
 
     if (token) {
       const delBtn = document.createElement("button");
-      delBtn.id = `deleteTopic-${topic._id}`;
+      delBtn.id = "deleteTopic";
       delBtn.className = "btn waves-effect waves-light";
       delBtn.textContent = "Delete";
 
