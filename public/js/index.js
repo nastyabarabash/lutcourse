@@ -38,8 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     location.reload();
   });
 
-  if (token) setupTopicForm(token);
-
+  setupTopicForm(token);
   loadTopics(token);
 });
 
@@ -47,19 +46,38 @@ function setupTopicForm(token) {
   const topicFormDiv = document.getElementById("topicForm");
   const form = document.createElement("form");
 
+  const disabled = !token ? "disabled" : "";
+
   form.innerHTML = `
     <div class="input-field">
-      <input id="topicTitle" type="text" required />
+      <input id="topicTitle" type="text" ${disabled} required />
       <label for="topicTitle">Title</label>
     </div>
+
     <div class="input-field">
-      <textarea id="topicText" class="materialize-textarea" required></textarea>
+      <textarea
+        id="topicText"
+        class="materialize-textarea"
+        ${disabled}
+        required
+      ></textarea>
       <label for="topicText">Content</label>
     </div>
-    <button id="postTopic" type="submit" class="btn waves-effect waves-light">
+
+    <button
+      id="postTopic"
+      type="submit"
+      class="btn waves-effect waves-light"
+      ${disabled}
+    >
       Post topic
     </button>
   `;
+
+  if (!token) {
+    topicFormDiv.appendChild(form);
+    return;
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
