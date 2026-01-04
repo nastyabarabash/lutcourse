@@ -45,6 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function setupTopicForm(token) {
   const topicFormDiv = document.getElementById("topicForm");
+  if (!topicFormDiv) return;
+
+  topicFormDiv.innerHTML = "";
   const form = document.createElement("form");
 
   form.innerHTML = `
@@ -117,8 +120,8 @@ async function loadTopics(token) {
 
     if (token) {
       const delBtn = document.createElement("button");
-      delBtn.id = "deleteTopic";
-      delBtn.className = "btn waves-effect waves-light";
+      delBtn.id = `deleteTopic-${topic._id}`;
+      delBtn.className = "btn waves-effect waves-light delete-topic-btn";
       delBtn.textContent = "Delete";
 
       delBtn.addEventListener("click", async () => {
