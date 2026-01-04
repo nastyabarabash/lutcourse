@@ -121,7 +121,7 @@ async function loadTopics(token) {
     if (token) {
       const delBtn = document.createElement("button");
       delBtn.id = `deleteTopic-${topic._id}`;
-      delBtn.className = "btn waves-effect waves-light delete-topic-btn";
+      delBtn.className = "btn waves-effect waves-light";
       delBtn.textContent = "Delete";
 
       delBtn.addEventListener("click", async () => {
