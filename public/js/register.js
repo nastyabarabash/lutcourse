@@ -11,6 +11,7 @@ const fetchData = async (event) => {
     email: event.target.email.value,
     username: event.target.username.value,
     password: event.target.password.value,
+    isAdmin: event.target.isAdmin.checked
   }
 
   try {
@@ -26,7 +27,6 @@ const fetchData = async (event) => {
       const data = await response.json();
     
       if (data.errors && Array.isArray(data.errors)) {
-        // show all validation errors
         document.getElementById("error").innerHTML =
           data.errors.map(err => `• ${err.msg}`).join("<br>");
       } else if (data.error) {

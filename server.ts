@@ -2,6 +2,7 @@ import express, {Express} from "express"
 import path from "path"
 import router from "./src/routes/index"
 import userRouter from "./src/routes/user" 
+import topicRouter from "./src/routes/topic"
 import morgan from "morgan"
 import mongoose, { Connection } from "mongoose"
 import dotenv from "dotenv"
@@ -25,6 +26,7 @@ app.use(morgan("dev"))
 
 app.use("/", router)
 app.use("/api", userRouter)
+app.use("/api", topicRouter)
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

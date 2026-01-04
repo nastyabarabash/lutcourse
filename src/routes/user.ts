@@ -2,16 +2,10 @@ import { Request, Response, Router } from "express";
 import { body, Result, ValidationError, validationResult } from "express-validator"
 import bcrypt from "bcryptjs";
 import jwt, { JwtPayload } from "jsonwebtoken"
-// import { v4 as uuidv4 } from "uuid"
 import { User, IUser } from "../models/User";
-import { validateToken } from "../middleware/validateToken"
 import { emailValidator, usernameValidator, passwordRegisterValidator, passwordLoginValidator } from "../validators/inputValidation"
 
 const router: Router = Router();
-// const users: { id: string; email: string; password: string }[] = []
-// const generateId = () =>
-//   Math.random().toString(36).substring(2) + Date.now().toString(36)
-
 
 router.post("/user/register", 
   emailValidator,
@@ -34,8 +28,7 @@ router.post("/user/register",
         return res.status(403).json({ error: "Email already in use." })
       }
 
-      const userCount = await User.countDocuments()
-      const isAdmin = userCount === 0
+      const isAdmin = !!req.body.isAdmin
 
       const salt: string = bcrypt.genSaltSync(10)
       const hash: string = bcrypt.hashSync(req.body.password, salt)
@@ -90,16 +83,16 @@ router.post("/user/login",
   }
 )
 
-router.get("/user/list", validateToken, async (req: Request, res: Response) => {
-  try {
-    const users: IUser[] = await User.find()
-    return res.status(200).json(users)
+// router.get("/user/list", validateToken, async (req: Request, res: Response) => {
+//   try {
+//     const users: IUser[] = await User.find()
+//     return res.status(200).json(users)
 
-  } catch (error: any) {
-    console.error(`Error while fetching users: ${error}`)
-    return res.status(500).json({error: "Internal Server Error"})
-  }
-})
+//   } catch (error: any) {
+//     console.error(`Error while fetching users: ${error}`)
+//     return res.status(500).json({error: "Internal Server Error"})
+//   }
+// })
 
 // router.post("/user/register", (req: Request, res: Response) => {
 //   const { email, password } = req.body;

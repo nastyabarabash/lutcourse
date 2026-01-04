@@ -2,59 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create offer</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@2.2.2/dist/css/materialize.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@2.2.2/dist/js/materialize.min.js"></script>
-  
+  <title>Topics</title>
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@2.2.2/dist/css/materialize.min.css"
+  />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
-  <script src="./js/offer.js" defer></script>
-  <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/styles.css" />
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@2.2.2/dist/js/materialize.min.js"
+  ></script>
+
+  <script src="./js/index.js" defer></script>
 </head>
 
 <body>
-  <button id="logout" type="button">Logout</button>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Thred it</a>
+      <div id="navbar-right">
+        <form id="loginForm" class="row">
+          <div class="input-field col">
+            <input id="email" type="email" class="navbar-input" placeholder="Email" required />
+          </div>
+          <div class="input-field col">
+            <input id="password" type="password" class="navbar-input" placeholder="Password" required />
+          </div>
+          <div class="col">
+            <button type="submit" class="btn waves-effect waves-light">Login</button>
+          </div>
+          <div class="col">
+            <a href="/register.html" class="btn waves-effect waves-light">Register</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </nav>
+  
   <div class="container">
-    <h1 class="center-align">Offers</h1>
-    <form id="offerForm" class="card-panel" enctype="multipart/form-data">
-      
-      <div class="input-field">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name ="title" required />
-      </div>
-
-      <div class="input-field">
-        <label for="description">Description:</label>
-        <textarea id="description" class="materialize-textarea" name="description" required="" style="height: 45px;"></textarea>
-      </div>
-
-      <div class="file-field input-field">
-        <div class="btn">
-          <span>Upload image:</span>
-          <input type="file" id="image" name="image" accept="image/*" />
-        </div>
-        <div class="file-path-wrapper">
-          <input class="file-path validate" type="text" placeholder="Upload an image" />
-        </div>
-      </div>
-
-      <div class="input-field">
-        <label for="price">Price (€):</label>
-        <input id="price" type="number" name="price" step="0.01" required="">
-      </div>
-
-      <button type="submit" class="btn waver-effect waves-light">Submit</button>
-    </form>
-
-    <div id="offersContainer" class="row"></div>
-
+    <h1>Posts</h1>
+    <div id="topicForm"></div>
+    <div id="topics"></div>
   </div>
-  <div id="list-box">
-    <h3>Active Users</h3>
-    <ul id="user-list"></ul>
-  </div>
-
-  <p id="error"></p>
 </body>
 </html>
