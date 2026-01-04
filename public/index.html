@@ -22,25 +22,31 @@
   <nav>
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">Thred it</a>
-      <div id="navbar-right">
-        <form id="loginForm" class="row">
-          <div class="input-field col">
-            <input id="email" type="email" class="navbar-input" placeholder="Email" required />
-          </div>
-          <div class="input-field col">
-            <input id="password" type="password" class="navbar-input" placeholder="Password" required />
-          </div>
-          <div class="col">
-            <button type="submit" class="btn waves-effect waves-light">Login</button>
-          </div>
-          <div class="col">
-            <a href="/register.html" class="btn waves-effect waves-light">Register</a>
-          </div>
-        </form>
+        <ul class="right"></ul>
+          <li id="login-li">
+            <form id="loginForm" class="row">
+              <div class="input-field col">
+                <input id="email" type="email" class="navbar-input" placeholder="Email" required />
+              </div>
+              <div class="input-field col">
+                <input id="password" type="password" class="navbar-input" placeholder="Password" required />
+              </div>
+              <div class="col">
+                <button type="submit" class="btn waves-effect waves-light">Login</button>
+              </div>
+              <div class="col">
+                <a href="/register.html" class="btn waves-effect waves-light">Register</a>
+              </div>
+            </form>
+          </li>
+          <li id="logout-li" style="display:none;">
+            <button id="logout" class="btn waves-effect waves-light">Logout</button>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
-  
+
   <div class="container">
     <h1>Posts</h1>
     <div id="topicForm"></div>
