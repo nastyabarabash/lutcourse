@@ -38,52 +38,47 @@ document.addEventListener("DOMContentLoaded", () => {
     location.reload();
   });
 
-  setupTopicForm(token);
+  if (token) setupTopicForm(token);
+
   loadTopics(token);
 });
 
 function setupTopicForm(token) {
   const topicFormDiv = document.getElementById("topicForm");
-  topicFormDiv.innerHTML = "";
-
   const form = document.createElement("form");
 
   form.innerHTML = `
-  <div class="input-field">
-    <input id="topicTitle" type="text" ${!token ? "disabled" : ""} required />
-    <label for="topicTitle">Title</label>
-  </div>
-
-  <div class="input-field">
-    <textarea id="topicText" class="materialize-textarea" ${!token ? "disabled" : ""} required></textarea>
-    <label for="topicText">Content</label>
-  </div>
-
-  <button id="postTopic" type="submit" class="btn waves-effect waves-light" ${!token ? "disabled" : ""}>
-    Post topic
-  </button>
+    <div class="input-field">
+      <input id="topicTitle" type="text" required />
+      <label for="topicTitle">Title</label>
+    </div>
+    <div class="input-field">
+      <textarea id="topicText" class="materialize-textarea" required></textarea>
+      <label for="topicText">Content</label>
+    </div>
+    <button id="postTopic" type="submit" class="btn waves-effect waves-light">
+      Post topic
+    </button>
   `;
 
-  if (token) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      await fetch("/api/topic", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          title: form.topicTitle.value,
-          content: form.topicText.value,
-        }),
-      });
-
-      form.reset();
-      loadTopics(token);
+    await fetch("/api/topic", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title: form.topicTitle.value,
+        content: form.topicText.value,
+      }),
     });
-  }
+
+    form.reset();
+    loadTopics(token);
+  });
 
   topicFormDiv.appendChild(form);
 }
