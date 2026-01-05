@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     location.reload();
   });
 
-  setupTopicForm(token);
+  if (token) setupTopicForm(token);
   loadTopics(token);
 });
 
@@ -46,38 +46,21 @@ function setupTopicForm(token) {
   const topicFormDiv = document.getElementById("topicForm");
   const form = document.createElement("form");
 
-  const disabled = !token ? "disabled" : "";
-
   form.innerHTML = `
-    <div class="input-field">
-      <input id="topicTitle" type="text" ${disabled} required />
-      <label for="topicTitle">Title</label>
-    </div>
+  <div class="input-field">
+    <input id="topicTitle" type="text" required />
+    <label for="topicTitle">Title</label>
+  </div>
 
-    <div class="input-field">
-      <textarea
-        id="topicText"
-        class="materialize-textarea"
-        ${disabled}
-        required
-      ></textarea>
-      <label for="topicText">Content</label>
-    </div>
+  <div class="input-field">
+    <textarea id="topicText" class="materialize-textarea" required></textarea>
+    <label for="topicText">Content</label>
+  </div>
 
-    <button
-      id="postTopic"
-      type="submit"
-      class="btn waves-effect waves-light"
-      ${disabled}
-    >
-      Post topic
-    </button>
+  <button id="postTopic" type="submit" class="btn waves-effect waves-light">
+    Post topic
+  </button>
   `;
-
-  if (!token) {
-    topicFormDiv.appendChild(form);
-    return;
-  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -133,7 +116,6 @@ async function loadTopics(token) {
 
     if (token) {
       const delBtn = document.createElement("button");
-      delBtn.id = "deleteTopic";
       delBtn.className = "btn waves-effect waves-light";
       delBtn.textContent = "Delete";
 
