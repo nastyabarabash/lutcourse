@@ -25,6 +25,16 @@ function MyContainer() {
     setNewText("")
   }
 
+  const updateList = (id: string): void => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id
+          ? { ...item, clicked: !item.clicked }
+          : item
+      )
+    );
+  };
+
   return (
     <div>
       <textarea
@@ -34,7 +44,7 @@ function MyContainer() {
       <br />
       <button onClick={addItem}>Add item</button>
 
-      <MyList header={header} items={items} />
+      <MyList header={header} items={items} updateList={updateList} />
     </div>
   );
 }
