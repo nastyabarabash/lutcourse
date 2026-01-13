@@ -5,7 +5,7 @@ function MyContainer() {
   const header: string = "this is list header"
 
   const [items, setItems] = useState<TItem[]>([
-    { id: "1", text: "First task", clicked: true },
+    { id: "1", text: "First task", clicked: false },
     { id: "2", text: "Second task", clicked: false },
     { id: "3", text: "Third task", clicked: false },
   ])
