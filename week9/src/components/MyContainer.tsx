@@ -25,7 +25,7 @@ function MyContainer() {
     setNewText("")
   }
 
-  const updateClickedItem = (id: string): void => {
+  const updateList = (id: string): void => {
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id
@@ -44,7 +44,7 @@ function MyContainer() {
       <br />
       <button onClick={addItem}>Add item</button>
 
-      <MyList header={header} items={items} updateClickedItem={updateClickedItem} />
+      <MyList header={header} items={items} updateList={updateList} />
     </div>
   );
 }
