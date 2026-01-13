@@ -44,14 +44,7 @@ function MyContainer() {
       <br />
       <button onClick={addItem}>Add item</button>
 
-      {/* <MyList header={header} items={items} updateClickedItem={updateClickedItem} /> */}
-      <MyList
-        lists={{
-          header: header,
-          items: items,
-          updateClickedItem: updateClickedItem,
-        }}
-      />
+      <MyList header={header} items={items} updateClickedItem={updateClickedItem} />
     </div>
   );
 }

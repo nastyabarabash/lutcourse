@@ -5,15 +5,12 @@ export type TItem = {
 }
 
 export interface ListProps {
-  lists: {
     header: string
     items: TItem[]
     updateClickedItem: (id: string) => void
-  }
 }
 
-const MyList: React.FC<ListProps> = ({ lists }) => {
-  const { header, items, updateClickedItem } = lists
+const MyList: React.FC<ListProps> = ({ header, items, updateClickedItem }) => {
 
   return (
     <div>
