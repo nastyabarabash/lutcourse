@@ -5,13 +5,12 @@ export type TItem = {
 }
 
 export interface ListProps {
-    header: string
-    items: TItem[]
-    updateClickedItem: (id: string) => void
+  header: string
+  items: TItem[]
+  updateClickedItem: (id: string) => void
 }
 
 const MyList: React.FC<ListProps> = ({ header, items, updateClickedItem }) => {
-
   return (
     <div>
       <h2>{header}</h2>
