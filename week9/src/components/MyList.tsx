@@ -5,18 +5,22 @@ export type TItem = {
 }
 
 export interface ListProps {
-  header: string
-  items: TItem[]
-  updateList: (id: string) => void
+  lists: {
+    header: string
+    items: TItem[]
+    updateClickedItem: (id: string) => void
+  }
 }
 
-const MyList: React.FC<ListProps> = ({ header, items, updateList }) => {
+const MyList: React.FC<ListProps> = ({ lists }) => {
+  const { header, items, updateClickedItem } = lists
+
   return (
     <div>
       <h2>{header}</h2>
       <ol>
         {items.map((item) => (
-          <li key={item.id} onClick={() => updateList(item.id)}
+          <li key={item.id} onClick={() => updateClickedItem(item.id)}
           style={{
             textDecoration: item.clicked ? "line-through" : "none",
             cursor: "pointer",
