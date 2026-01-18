@@ -1,25 +1,50 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import MyContainer from '../components/MyContainer';
+import  { act } from "react";
+import About from "../components/About";
+import { render, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { I18nextProvider } from "react-i18next";
+import i18n from "../i18n";
 
-describe('MyContainer', () => {
-  it('should input text and display it on the page when the button is clicked', async () => {
-    render(<MyContainer />);
+// Mocking global fetch
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () =>
+      Promise.resolve(
+        Array.from({ length: 5 }, (_, i) => ({
+          id: i + 1,
+          title: `title ${i + 1}`,
+          body: `body ${i + 1}`,
+        }))
+      )
+  }) as any
+);
 
-    // Find the textbox and button
-    const textbox = screen.getByRole('textbox');
-    const button = screen.getByRole('button');
+test("renders grid-container and grid-items with h3 and p elements", async () => {
+  // Render the About component
+  await act(async () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <About />
+      </I18nextProvider>
+    );
+  });
 
-    // Input text into the textbox
-    fireEvent.change(textbox, { target: { value: 'Some other epic text to write' } });
+  // Wait for the data to load and render
+  await waitFor(() => {
+    // Check that the grid-container exists
+    const gridContainer = document.querySelector(".grid-container");
+    expect(gridContainer).toBeInTheDocument();
 
-    // Click the button
-    fireEvent.click(button);
+    // Check that the grid-container has children with the class grid-item
+    const gridItems = document.querySelectorAll(".grid-container .grid-item");
+    expect(gridItems).toHaveLength(5); // 5 items mocked in the fetch response
 
-    // Wait for the text to be rendered and displayed on the page
-    await waitFor(() => screen.getByText('Some other epic text to write'));
-
-    // Confirm that the text is now rendered on the page
-    expect(screen.getByText('Some other epic text to write')).toBeInTheDocument();
+    // Check each grid-item contains an h3 and a p element
+    gridItems?.forEach((item) => {
+      const title = item.querySelector("h3");
+      const body = item.querySelector("p");
+      expect(title).toBeInTheDocument(); // Ensure h3 is inside grid-container > grid-item
+      expect(body).toBeInTheDocument(); // Ensure p is inside grid-container > grid-item
+    });
   });
 });
