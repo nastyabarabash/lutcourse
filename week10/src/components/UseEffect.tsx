@@ -6,7 +6,11 @@ interface Item {
   body: string
 }
 
-const UseEffect = () => {
+interface UseEffectProps {
+  visibleCount: number
+}
+
+const UseEffect = ({ visibleCount }: UseEffectProps) => {
   const [items, setItems] = useState<Item[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -31,14 +35,14 @@ const UseEffect = () => {
   if (error) return <p>Error: {error}</p>
 
   return (
-    <div>
-      {items.map((item) => (
-        <div key={item.id} style={{ marginBottom: "1rem" }}>
+    <>
+      {items.slice(0, visibleCount).map((item) => (
+        <div key={item.id} className="grid-item">
           <h3>{item.title}</h3>
           <p>{item.body}</p>
         </div>
       ))}
-    </div>
+    </>
   )
 }
 
