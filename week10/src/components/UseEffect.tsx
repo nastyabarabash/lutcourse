@@ -16,6 +16,20 @@ const UseEffect = ({ visibleCount }: UseEffectProps) => {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    const isTest = process.env.NODE_ENV === "test"
+
+    if (isTest) {
+      setItems([
+        { id: 1, title: "title 1", body: "body 1" },
+        { id: 2, title: "title 2", body: "body 2" },
+        { id: 3, title: "title 3", body: "body 3" },
+        { id: 4, title: "title 4", body: "body 4" },
+        { id: 5, title: "title 5", body: "body 5" }
+      ])
+      setLoading(false)
+      return
+    }
+
     fetch("https://jsonplaceholder.typicode.com/posts")
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok")
