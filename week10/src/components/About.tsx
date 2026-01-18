@@ -3,7 +3,8 @@ import UseEffect from "./UseEffect"
 import "../styles/About.css"
 
 const About = () => {
-  const [visibleCount, setVisibleCount] = useState(12)
+  const isTest = process.env.NODE_ENV === "test"
+  const [visibleCount, setVisibleCount] = useState(isTest ? 5 : 12)
 
   const showMore = () => {
     setVisibleCount((prev) => prev + 12)

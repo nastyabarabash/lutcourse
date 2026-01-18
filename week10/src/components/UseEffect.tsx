@@ -29,7 +29,6 @@ const UseEffect = ({ visibleCount }: UseEffectProps) => {
       return
     }
 
-    // Normal fetch for browser
     fetch("https://jsonplaceholder.typicode.com/posts")
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok")
