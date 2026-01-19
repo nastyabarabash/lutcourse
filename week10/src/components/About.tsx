@@ -3,7 +3,7 @@ import UseEffect from "./UseEffect"
 import "../styles/About.css"
 
 const About = () => {
-  const [visibleCount, setVisibleCount] = useState(12)
+  const [visibleCount, setVisibleCount] = useState(5)
 
   const showMore = () => {
     setVisibleCount((prev) => prev + 12)
