@@ -30,7 +30,7 @@ const SavedPage = ({ savedJokes, deleteJoke }: SavedPageProps) => {
               color="error"
               onClick={() => deleteJoke(joke.id)}
             >
-              Delete joke
+              Delete
             </Button>
           </CardContent>
         </Card>
