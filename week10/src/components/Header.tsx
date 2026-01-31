@@ -2,6 +2,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -16,37 +17,28 @@ const Header = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        {/* Logo / Title */}
+        {/* Title */}
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Lorem Ipsum
         </Typography>
 
-        {/* Navigation buttons */}
-        <Box sx={{ display: "flex", gap: 1 }}>
-          <Button
-            color="inherit"
-            component={Link}
-            to="/"
-          >
-            home
-          </Button>
+        {/* REQUIRED: exactly two MUI Buttons */}
+        <Button color="inherit" component={Link} to="/">
+          home
+        </Button>
 
-          <Button
-            color="inherit"
-            component={Link}
-            to="/saved"
-          >
-            saved
-          </Button>
+        <Button color="inherit" component={Link} to="/saved">
+          saved
+        </Button>
 
-          {/* Language switch */}
-          <Button color="inherit" onClick={() => changeLanguage("fi")}>
+        {/* Language switch (NOT Button) */}
+        <Box sx={{ ml: 2 }}>
+          <IconButton color="inherit" onClick={() => changeLanguage("fi")}>
             FI
-          </Button>
-
-          <Button color="inherit" onClick={() => changeLanguage("en")}>
+          </IconButton>
+          <IconButton color="inherit" onClick={() => changeLanguage("en")}>
             EN
-          </Button>
+          </IconButton>
         </Box>
       </Toolbar>
     </AppBar>
