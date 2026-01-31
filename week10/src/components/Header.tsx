@@ -1,40 +1,56 @@
-import { Link } from "react-router-dom"
-import { useTranslation } from "../../node_modules/react-i18next"
-import "../styles/header.css"
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
-  const { t, i18n } = useTranslation()
+  const { t, i18n } = useTranslation();
 
   const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng)
+    i18n.changeLanguage(lng);
   };
 
   return (
-    <header className="header">
-      <h1 className="header-logo">Lorem Ipsum</h1>
+    <AppBar position="static">
+      <Toolbar>
+        {/* Logo / Title */}
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          Lorem Ipsum
+        </Typography>
 
-      <nav>
-        <ul className="nav-list">
-          <li>
-            <Link to="/">{t("home")}</Link>
-          </li>
-          <li>
-            <Link to="/about">{t("about")}</Link>
-          </li>
-          <li>
-            <button id="fi" onClick={() => changeLanguage("fi")}>
-              FI
-            </button>
-          </li>
-          <li>
-            <button id="en" onClick={() => changeLanguage("en")}>
-              EN
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </header>
-  )
-}
+        {/* Navigation buttons */}
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Button
+            color="inherit"
+            component={Link}
+            to="/"
+          >
+            home
+          </Button>
 
-export default Header
+          <Button
+            color="inherit"
+            component={Link}
+            to="/saved"
+          >
+            saved
+          </Button>
+
+          {/* Language switch */}
+          <Button color="inherit" onClick={() => changeLanguage("fi")}>
+            FI
+          </Button>
+
+          <Button color="inherit" onClick={() => changeLanguage("en")}>
+            EN
+          </Button>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+};
+
+export default Header;
