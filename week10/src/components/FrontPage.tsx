@@ -6,15 +6,14 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import { IJoke } from "../hooks/useJokes";
 
-type Joke = {
-  id: number;
-  setup: string;
-  punchline: string;
-};
+interface FrontPageProps {
+  saveJoke?: (joke: IJoke) => boolean;
+}
 
-const FrontPage = () => {
-  const [joke, setJoke] = useState<Joke | null>(null);
+const FrontPage = ({ saveJoke }: FrontPageProps) => {
+  const [joke, setJoke] = useState<IJoke | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetchJoke = () => {
@@ -30,7 +29,7 @@ const FrontPage = () => {
         }
         return res.json();
       })
-      .then((data: Joke) => {
+      .then((data: IJoke) => {
         setJoke(data);
       })
       .catch((error) => {
@@ -48,21 +47,36 @@ const FrontPage = () => {
   useEffect(() => {
     const controller = fetchJoke();
 
-    // Cleanup with AbortController
     return () => {
       controller.abort();
     };
   }, []);
+
+  const handleSaveJoke = () => {
+    if (joke && saveJoke) {
+      saveJoke(joke);
+    }
+  };
 
   return (
     <Box sx={{ padding: 3 }}>
       <Button
         variant="contained"
         onClick={fetchJoke}
-        sx={{ marginBottom: 3 }}
+        sx={{ marginBottom: 2, marginRight: 2 }}
       >
         Get Joke
       </Button>
+
+      {joke && saveJoke && (
+        <Button
+          variant="outlined"
+          onClick={handleSaveJoke}
+          sx={{ marginBottom: 2 }}
+        >
+          Save joke
+        </Button>
+      )}
 
       {loading && <Typography>Loading a joke...</Typography>}
 
@@ -72,7 +86,6 @@ const FrontPage = () => {
             <Typography variant="h6" gutterBottom>
               {joke.setup}
             </Typography>
-
             <Typography variant="body1" color="text.secondary">
               {joke.punchline}
             </Typography>
