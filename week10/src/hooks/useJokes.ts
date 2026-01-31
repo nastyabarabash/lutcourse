@@ -11,7 +11,6 @@ export const useJokes = () => {
 
   const saveJoke = (joke: IJoke): boolean => {
     setSavedJokes((prev) => {
-      // prevent duplicates by id
       if (prev.some((j) => j.id === joke.id)) {
         return prev;
       }
@@ -21,8 +20,14 @@ export const useJokes = () => {
     return true;
   };
 
+  // ✅ NEW delete functionality
+  const deleteJoke = (id: number): void => {
+    setSavedJokes((prev) => prev.filter((joke) => joke.id !== id));
+  };
+
   return {
     savedJokes,
     saveJoke,
+    deleteJoke,
   };
 };
