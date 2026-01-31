@@ -61,7 +61,7 @@ const FrontPage = () => {
         onClick={fetchJoke}
         sx={{ marginBottom: 3 }}
       >
-        Fetch new joke
+        Get Joke
       </Button>
 
       {loading && <Typography>Loading a joke...</Typography>}
