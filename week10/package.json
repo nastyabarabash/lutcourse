@@ -9,7 +9,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest",
+    "install": "cd client && npm install",
+    "dev:client": "cd client && npm run dev"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
