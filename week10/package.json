@@ -10,8 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest",
-    "install": "cd client && npm install",
-    "dev:client": "cd client && npm run dev"
+    "install": "cd client/week12 && npm install",
+    "dev:client": "cd client/week12 && npm run dev"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
