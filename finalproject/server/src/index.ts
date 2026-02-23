@@ -1,23 +1,33 @@
-import express from "express"
-import mongoose from "mongoose"
+import express, { Express } from "express"
+import mongoose, { Connection } from "mongoose"
 import dotenv from "dotenv"
+import morgan from "morgan"
 
 dotenv.config()
 
-const app = express()
+const app: Express = express()
+const port: number = parseInt(process.env.PORT as string) || 3000
 
-app.use(express.json())
+const mongoDB: string = "mongodb://127.0.0.1:27017/clouddrive"
 
-mongoose
-  .connect(process.env.MONGO_URI as string)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error(err))
+mongoose.connect(mongoDB)
+mongoose.Promise = Promise
 
-app.get("/", (req, res) => {
-  res.send("API is running")
+const db: Connection = mongoose.connection
+
+db.on("error", console.error.bind(console, "MongoDB connection error"))
+db.once("open", () => {
+  console.log("MongoDB connected")
 })
 
-const PORT = 5000
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(morgan("dev"))
+
+app.get("/", (req, res) => {
+  res.send("Cloud Drive API running")
+})
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`)
 })
