@@ -2,6 +2,8 @@ import express, { Express } from "express"
 import mongoose, { Connection } from "mongoose"
 import dotenv from "dotenv"
 import morgan from "morgan"
+import cors from "cors"
+import authRouter from "./routes/auth"
 
 dotenv.config()
 
@@ -20,9 +22,12 @@ db.once("open", () => {
   console.log("MongoDB connected")
 })
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(morgan("dev"))
+
+app.use("/api/auth", authRouter)
 
 app.get("/", (req, res) => {
   res.send("Cloud Drive API running")
