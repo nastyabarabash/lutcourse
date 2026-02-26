@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 import Register from "./components/Register"
 import Login from "./components/Login"
+import Dashboard from "./components/Dashboard"
+import CreateDocument from "./components/CreateDocument"
+import EditDocument from "./components/EditDocument"
+import PublicDocument from "./components/PublicDocument"
 
 function App() {
   return (
@@ -13,6 +17,10 @@ function App() {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/documents/new" element={<CreateDocument />} />
+        <Route path="/documents/:id" element={<EditDocument />} />
+        <Route path="/public/:shareId" element={<PublicDocument />} />
       </Routes>
     </BrowserRouter>
   )

@@ -10,5 +10,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "cd client/final && npm install",
     "dev:client": "cd client/final && npm run dev"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/uuid": "^10.0.0"
   }
 }

@@ -24,6 +24,7 @@ router.post(
       await doc.save()
       res.status(201).json(doc)
     } catch (error) {
+      console.error("Documents route error:", error)
       res.status(500).json({ message: "Server error" })
     }
   }
@@ -36,7 +37,8 @@ router.get(
     try {
       const docs = await Document.find({ owner: req.user.id })
       res.json(docs)
-    } catch {
+    } catch (error) {
+      console.error("Documents route error:", error)
       res.status(500).json({ message: "Server error" })
     }
   }
@@ -58,7 +60,8 @@ router.put(
       }
 
       res.json(doc)
-    } catch {
+    } catch (error) {
+      console.error("Documents route error:", error)
       res.status(500).json({ message: "Server error" })
     }
   }
@@ -79,10 +82,64 @@ router.delete(
       }
 
       res.json({ message: "Deleted" })
-    } catch {
+    } catch (error) {
+      console.error("Documents route error:", error)
       res.status(500).json({ message: "Server error" })
     }
   }
 )
+
+router.get("/public/:shareId", async (req: Request, res: Response) => {
+  try {
+    const shareId = req.params.shareId
+    if (!shareId) {
+      return res.status(400).json({ message: "Share ID required" })
+    }
+    
+    const doc = await Document.findOne({
+      shareId,
+      isPublic: true
+    })
+
+    if (!doc) {
+      return res.status(404).json({ message: "Document not found" })
+    }
+
+    res.json({
+      title: doc.title,
+      content: doc.content,
+      createdAt: doc.createdAt
+    })
+  } catch (error) {
+    console.error("Documents route error:", error)
+    res.status(500).json({ message: "Server error" })
+  }
+})
+
+router.patch("/:id/share", authMiddleware, async (req: AuthRequest, res: Response) => {
+  try {
+    const doc = await Document.findOne({
+      _id: req.params.id,
+      owner: req.user?.id
+    })
+
+    if (!doc) {
+      return res.status(404).json({ message: "Document not found" })
+    }
+
+    doc.isPublic = !doc.isPublic
+    await doc.save()
+
+    res.json({
+      message: "Share status updated",
+      isPublic: doc.isPublic,
+      shareLink: doc.isPublic
+        ? `http://localhost:5000/api/documents/public/${doc.shareId}`
+        : null
+    })
+  } catch {
+    res.status(500).json({ message: "Server error" })
+  }
+})
 
 export default router
