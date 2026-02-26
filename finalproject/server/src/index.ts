@@ -4,11 +4,12 @@ import dotenv from "dotenv"
 import morgan from "morgan"
 import cors from "cors"
 import authRouter from "./routes/auth"
+import documentRouter from "./routes/documents"
 
 dotenv.config()
 
 const app: Express = express()
-const port: number = parseInt(process.env.PORT as string) || 3000
+const port: number = parseInt(process.env.PORT as string) || 5000
 
 const mongoDB: string = "mongodb://127.0.0.1:27017/clouddrive"
 
@@ -28,6 +29,8 @@ app.use(express.urlencoded({ extended: false }))
 app.use(morgan("dev"))
 
 app.use("/api/auth", authRouter)
+
+app.use("/api/documents", documentRouter)
 
 app.get("/", (req, res) => {
   res.send("Cloud Drive API running")

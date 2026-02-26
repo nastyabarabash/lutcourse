@@ -39,28 +39,48 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body
 
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password required"
+      })
+    }
+
     const user = await User.findOne({ email })
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" })
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials"
+      })
     }
 
     const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" })
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials"
+      })
     }
 
     const token = jwt.sign(
-      { userId: user._id },
+      { id: user._id },
       process.env.SECRET as string,
-      { expiresIn: "1d" }
+      { expiresIn: "1h" }
     )
 
-    res.json({ token })
+    return res.status(200).json({
+      success: true,
+      token
+    })
 
   } catch (error) {
-    res.status(500).json({ message: "Server error" })
+    console.error("Login error:", error)
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    })
   }
 })
 
