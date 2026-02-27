@@ -9,10 +9,19 @@ interface RegisterProps {
 const Register = ({ onLogin }: RegisterProps) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError(null)
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address")
+      return
+    }
     try {
       const response = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
@@ -25,7 +34,7 @@ const Register = ({ onLogin }: RegisterProps) => {
       onLogin(data.token)
       navigate("/dashboard")
     } catch (error: any) {
-      alert(error.message)
+      setError(error.message)
     }
   }
 
@@ -37,8 +46,9 @@ const Register = ({ onLogin }: RegisterProps) => {
       <div className="auth-container">
         <form onSubmit={handleSubmit}>
           <h2>Register</h2>
-          <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          {error && <div className="auth-error">{error}</div>}
           <button type="submit">Register</button>
         </form>
       </div>

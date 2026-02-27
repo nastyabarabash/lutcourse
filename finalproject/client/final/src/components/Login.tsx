@@ -9,10 +9,12 @@ interface LoginProps {
 const Login = ({ onLogin }: LoginProps) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError(null)
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
@@ -24,7 +26,7 @@ const Login = ({ onLogin }: LoginProps) => {
       onLogin(data.token)
       navigate("/dashboard")
     } catch (error: any) {
-      alert(error.message)
+      setError(error.message)
     }
   }
 
@@ -38,6 +40,7 @@ const Login = ({ onLogin }: LoginProps) => {
           <h2>Login</h2>
           <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          {error && <div className="auth-error">{error}</div>}
           <button type="submit">Login</button>
         </form>
       </div>

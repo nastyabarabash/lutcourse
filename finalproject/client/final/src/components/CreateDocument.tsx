@@ -7,6 +7,7 @@ const CreateDocument = () => {
   const [content, setContent] = useState("")
   const navigate = useNavigate()
   const token = localStorage.getItem("token")
+  const isDirty = title.trim() !== "" || content.trim() !== ""
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,6 +30,19 @@ const CreateDocument = () => {
     }
   }
 
+  const handleCancel = () => {
+    if (isDirty) {
+      const confirmCancel = window.confirm(
+        "You have unsaved changes. Are you sure you want to cancel?"
+      )
+  
+      if (!confirmCancel) return
+    }
+  
+    navigate("/dashboard")
+  }
+
+
   return (
     <form className="document-form" onSubmit={handleSubmit}>
       <h2>New Document</h2>
@@ -42,9 +56,39 @@ const CreateDocument = () => {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      <button type="submit">Create</button>
+      <div style={buttonRowStyle}>
+        <button type="submit" style={buttonStyle}>
+          Create
+        </button>
+
+        <button
+          type="button"
+          onClick={handleCancel}
+          style={buttonStyle}
+        >
+          Cancel
+        </button>
+      </div>
     </form>
   )
+}
+
+const buttonRowStyle: React.CSSProperties = {
+  display: "flex",
+  gap: "1rem",
+  marginTop: "1.5rem",
+}
+
+const buttonStyle: React.CSSProperties = {
+  flex: 1,
+  padding: "0.75rem",
+  borderRadius: "6px",
+  fontWeight: "bold",
+  cursor: "pointer",
+  fontSize: "1rem",
+  backgroundColor: "#4f46e5",
+  border: "1px solid #4f46e5",
+  color: "white",
 }
 
 export default CreateDocument
