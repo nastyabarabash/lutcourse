@@ -49,3 +49,6 @@ Start backend:<br>
 | Cancel confirmation on unsaved documents | 4 |
 | Dashboard table with sorting | 3 |
 | UI/UX Improvements | 5 |
+
+
+During the project I used ChatGPT for help - proofreading, finding and editing errors, code explanations, documentation format etc.  
